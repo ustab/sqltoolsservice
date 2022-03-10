@@ -13,6 +13,7 @@ using Microsoft.SqlTools.ServiceLayer.Hosting;
 using Microsoft.SqlTools.ServiceLayer.TableDesigner.Contracts;
 using Dac = Microsoft.Data.Tools.Sql.DesignServices.TableDesigner;
 using STSHost = Microsoft.SqlTools.ServiceLayer.Hosting.ServiceHost;
+using Microsoft.SqlTools.Hosting.Protocol.Contracts;
 
 namespace Microsoft.SqlTools.ServiceLayer.TableDesigner
 {
@@ -81,6 +82,7 @@ namespace Microsoft.SqlTools.ServiceLayer.TableDesigner
         {
             return this.HandleRequest<TableDesignerInfo>(requestContext, async () =>
             {
+                var token = await this.GetToken(tableInfo);
                 var tableDesigner = this.CreateTableDesigner(tableInfo);
                 var viewModel = this.GetTableViewModel(tableInfo);
                 var view = this.GetDesignerViewInfo(tableInfo);
@@ -1326,5 +1328,19 @@ namespace Microsoft.SqlTools.ServiceLayer.TableDesigner
                 disposed = true;
             }
         }
+
+        public Task<string> GetToken(TableInfo table)
+        {
+            return this.ServiceHost.SendRequest(GetSecurityTokenForTableDesignerRequest.Type, table, true);
+        }
     }
+
+    public class GetSecurityTokenForTableDesignerRequest
+    {
+        public static readonly
+            RequestType<TableInfo, string> Type =
+                RequestType<TableInfo, string>.Create(
+                    "tabledesigner/getsecuritytoken");
+    }
+
 }
