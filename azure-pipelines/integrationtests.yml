@@ -1,6 +1,7 @@
 pool:
     name: ads-build-1es-hosted-pool
-    demands: tsgops-vs2019-image
+    demands: 
+    - ImageOverride -equals tsgops-vs2019-image
 
 steps:
   - task: DockerInstaller@0
