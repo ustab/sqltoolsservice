@@ -34,10 +34,11 @@ steps:
     inputs:
       version: 3.1.406
 
-  - task: BatchScript@1
-    displayName: 'Run script build.cmd'
+  - task: Bash@3
+    displayName: 'build.sh'
     inputs:
-      filename: build.cmd
+      targetType: filePath
+      filePath: ./build.sh
       arguments: '-target=all -mono'
 
   - task: DotNetCoreCLI@2
