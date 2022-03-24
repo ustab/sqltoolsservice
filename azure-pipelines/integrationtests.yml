@@ -29,18 +29,6 @@ steps:
 
   - task: NuGetAuthenticate@0
 
-  - task: UseDotNet@2
-    displayName: 'Installing dotnet 3.1 to run srgen (To be removed after srgen is updated)'
-    inputs:
-      version: 3.1.406
-
-  - task: Bash@3
-    displayName: 'build.sh'
-    inputs:
-      targetType: filePath
-      filePath: ./build.sh
-      arguments: '-target=all -mono'
-
   - task: DotNetCoreCLI@2
     displayName: 'dotnet build'
     inputs:
